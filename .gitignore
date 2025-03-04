@@ -11,6 +11,10 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.DS_Store
+workouts/.DS_Store
+tem
+
 
 # Ignore virtual environment
 venv/
