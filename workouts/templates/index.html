@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}Welcome to POP - Proof of Progress{% endblock %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}styles.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+</head>
+<body>
+    {% block content %}
+
+    <div class="text-center mt-5" id="particles-js">
+        <h1>Welcome to POP</h1>
+
+    </br>
+
+        <p>POP, aka Proof of Progress, makes simple templates for logging your time on a project.</p>
+
+    </br>
+        <ul class="custom-list">
+            <li><i class="bi bi-patch-plus-fill"></i> Ready to log your fitness?</li>
+            <li><i class="bi bi-patch-plus-fill"></i> Maybe you want to log the hours committed to Uni study, a certification, or job?</li>
+            <li><i class="bi bi-patch-plus-fill"></i> POP in the hours spent to log your progress on a weekly, day-by-day, and hourly basis.</li>
+        </ul>
+    </br>
+    </br>
+        <p>Ready to start? <a href="{% url 'register' %}">Register</a></p>
+        <p>or Login to your <a href="{% url 'profile' %}">POP Profile</a>
+        </p>
+            
+        <!-- In the future, it would be so cool to have a nice visual of the many weekly templates in a monthly view or something -->
+
+    </div>
+
+    {% endblock %}
+</body>
+</html>

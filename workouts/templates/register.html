@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% block title %}Register - POP{% endblock %}
+</head>
+<body>
+    {% block content %}
+    
+    <div class="card mx-auto" style="max-width: 400px;">
+        <div class="card-body">
+            <h2 class="text-center mb-4">Account Register</h2>
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">Username</label>
+                    <input type="text" name="username" id="id_username" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_password1" class="form-label">Password</label>
+                    <input type="password" name="password1" id="id_password1" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_password2" class="form-label">Confirm Password</label>
+                    <input type="password" name="password2" id="id_password2" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-secondary w-100">Register</button>
+                
+                </br>
+                
+                {% if messages %}
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                {% endif %}
+
+            </form>
+
+            <p style="color: rgb(0, 0, 0);" class="mt-3 text-center">Already have an account? </p>
+            <p class="mt-3 text-center"><a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

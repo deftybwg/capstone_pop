@@ -1,0 +1,146 @@
+.week-header th {
+    border: none !important;  /* ✅ Removes table lines */
+    font-size: 1.5rem;        /* ✅ Increases font size */
+    font-weight: bold;        /* ✅ Makes it bold */
+    padding: 10px;            /* ✅ Adds spacing */
+    text-transform: uppercase; /* ✅ Optional: Capitalize text */
+    color: #d35400; /* Dark Orange */
+    font-weight: bold;
+    font-family: 'Secular One', sans-serif;
+
+}
+
+.dark-orange-btn {
+    background-color: #d35400; /* Dark Orange */
+    border-color: #b33a00; /* Slightly darker border */
+    color: white; /* White text for contrast */
+    font-family: 'Secular One', sans-serif;
+    
+}
+
+.dark-orange-btn:hover {
+    background-color: #b33a00; /* Darker orange on hover */
+    border-color: #8b2c00;
+}
+
+.newWeekButton_style {
+    background-color: #d35400; /* Dark Orange */
+    border-color: #b33a00; /* Slightly darker border */
+    color: white; /* White text for contrast */
+    font-family: 'Secular One', sans-serif;
+
+    /* Increase button size */
+    padding: 12px 24px; /* Top-Bottom | Left-Right */
+    font-size: 1.2rem; /* Larger text */
+    border-radius: 8px; /* Rounded edges */
+}
+
+.navbar {
+    background-color: #1a1a1a !important; /* Dark background same as the table */
+    font-family: 'Secular One', sans-serif;
+}
+
+.navbar a, .navbar-brand {
+    color: #d35400 !important; /* Dark Orange */
+    font-family: 'Secular One', sans-serif;
+
+}
+
+.navbar a:hover {
+    color: #ff7700 !important; /* Slightly brighter orange on hover */
+    font-family: 'Secular One', sans-serif;
+
+}
+
+body {
+    background-color: #121212 !important; /* Dark grey background */
+    color: #e0e0e0 !important; /* Off-white text */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+    margin: 0;
+    overflow: auto;
+    background: linear-gradient(180deg, #d35400, #000000);
+    height: auto;
+
+
+}
+
+.footer-text {
+    margin-top: auto; /* Pushes it to the bottom */
+    padding-bottom: 20px; /* Adjust distance from bottom */
+    text-align: center;
+}
+
+h1 {
+    color: #f5f5f5 !important; /* Slightly brighter off-white for headers */
+    font-size: 4.5rem; /* Adjust as needed */
+    margin-bottom: 20px; /* Adjust as needed */
+    font-family: 'Secular One', sans-serif;
+
+
+}
+
+h2 {
+    color:#d35400;
+    font-size: 4rem; /* Adjust as needed */
+    margin-bottom: 20px; /* Adjust as needed */
+    font-family: 'Secular One', sans-serif;
+}
+
+th, td, .table-dark {
+    color: #e0e0e0 !important; /* Uniform off-white color */
+}
+
+a {
+    color: #ff7700 !important; /* Orange for links */
+    font-family: 'Secular One', sans-serif;
+    font-size: 1.8rem; /* Adjust as needed */
+
+
+}
+
+a:hover {
+    color: #ffa64d !important; /* Lighter orange on hover */
+}
+
+.table-dark {
+    background-color: #1a1a1a !important; /* Same dark color as navbar */
+    color: white;
+}
+
+.table-dark th {
+    color: #d35400 !important; /* Orange headings */
+}
+
+* {
+    transition: all 0.3s ease-in-out;
+}
+
+.pop-highlight {
+    color: #d35400 !important; /* Dark Orange */
+    font-weight: bold;
+}
+
+p {
+    font-size: 1.1rem; /* Adjust as needed */
+    color: #e0e0e0; /* Off-white text */
+    line-height: 1.6; /* Improve readability */
+    font-size: 1.5rem;
+
+}
+
+.custom-list {
+    list-style: none; /* Remove default bullets */
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the list items */
+    font-size: 1.5rem;
+}
+
+.custom-list i {
+    color: #d35400; /* Orange icon */
+    margin-right: 10px; /* Space between icon and text */
+    font-size: 1.2rem; /* Adjust icon size slightly larger */
+}

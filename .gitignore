@@ -1,0 +1,32 @@
+# Ignore database files
+db.sqlite3
+
+# Ignore database migrations (optional, keeps repo clean)
+*/migrations/*.pyc
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore Django secret keys (if stored in .env)
+.env
+
+# Ignore logs and cache
+*.log
+*.cache
+
+# Ignore VS Code settings (if using VS Code)
+.vscode/
+
+# Ignore media and static files (if you don’t want to track uploads)
+media/
+staticfiles/
+

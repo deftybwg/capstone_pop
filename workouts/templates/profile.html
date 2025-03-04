@@ -1,0 +1,298 @@
+{% extends "layout.html" %}
+{% load custom_filters %}
+
+{% block title %}Profile - POP{% endblock %}
+
+{% block content %}
+
+<div class="text-center mt-5">
+    <h1 class="fw-bold">POP Profile for {{ user.username }}</h1>
+</div>
+
+<form id="csrf-form">
+    {% csrf_token %}
+</form>
+
+<div class="container mt-5">
+    <!-- New Week Button -->
+    <div class="text-center mb-3">
+        <button class="btn newWeekButton_style edit-btn" id="add-week-btn">Add New Week</button>
+    </div>
+
+    <!-- Tables Container -->
+    <div id="weeks-container">
+        {% for week in weeks %}
+            <div class="table-responsive mb-4">
+                <table class="table table-dark table-bordered text-center editableTable">
+                    <thead>
+                        <tr class="week-header">
+                            <th scope="col" colspan="3" class="text-center">Week {{ week.number }}</th>
+                        </tr>
+                        <tr class="week-header">
+                            <th scope="col" class="text-center">Day</th>
+                            <th scope="col" class="text-center">Log</th>
+                            <th scope="col" class="text-center">POP</th>
+                        </tr>
+                    </thead>
+                
+                    <tbody>
+                        {% for day, columns in week.entries.items %}
+                        <tr>
+                            <th scope="row">{{ day }}</th>
+                            <td id="entry-{{ week.number }}-{{ day }}" class="editable" onclick="makeEditable(this, '{{ week.number }}', '{{ day }}')">
+                                {{ columns|default:"" }}
+                            </td>
+                            <td>
+                                {% if day != "Total" %}
+                                    <button class="btn dark-orange-btn edit-btn" data-week="{{ week.number }}" data-day="{{ day }}">
+                                        <i class="bi bi-patch-plus-fill me-1"></i> POP
+                                    </button>
+                                {% endif %}
+                            </td>
+                            
+                        </tr>
+                        
+                        {% endfor %}
+                    
+                        <!-- Total Row -->
+                        {% if "Total" not in week.entries %}
+                        <tr>
+                            <th scope="row">Total</th>
+                            <td id="entry-{{ week.number }}-total">
+                                {{ week.total_hours|default:"" }}h
+                            </td>
+                        </tr>
+                        {% endif %}
+
+                    </tbody>
+                    
+                </table>
+                
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+
+// Function to attach event listeners to existing "POP" buttons
+function attachEditListeners() {
+    document.querySelectorAll(".edit-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            let weekNumber = this.dataset.week;
+            let day = this.dataset.day;
+            editLogEntry(weekNumber, day);
+        });
+    });
+}
+
+// Function to attach listener to "Add New Week" button
+function attachAddWeekListener() {
+    const addWeekButton = document.getElementById("add-week-btn");
+    if (addWeekButton) {
+        addWeekButton.addEventListener("click", function () {
+            addNewWeek();
+        });
+    }
+}
+
+function addNewWeek() {
+    let maxWeekNumber = 0;
+
+    // Get highest existing week number from displayed tables
+    document.querySelectorAll(".week-title").forEach(title => {
+        let num = parseInt(title.dataset.weekNumber);
+        if (!isNaN(num) && num > maxWeekNumber) {
+            maxWeekNumber = num;
+        }
+    });
+
+    let newWeekNumber = maxWeekNumber + 1;
+    console.log("🛠 Creating Week:", newWeekNumber);
+
+    const addWeekButton = document.getElementById("add-week-btn");
+    addWeekButton.disabled = true; // Prevent multiple clicks
+
+    // Send request to backend
+    fetch("/create_week/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({ week_number: newWeekNumber })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("🔹 Backend Response:", data);
+
+        if (data.status === "success") {
+            console.log("✅ Backend confirmed Week:", data.week_number);
+            renderWeekTable(data.week_number); // Use backend-confirmed week number
+        } else {
+            console.error("❌ Backend rejected week:", data.message);
+        }
+    })
+    .catch(error => console.error("❌ Fetch failed:", error))
+    .finally(() => {
+        addWeekButton.disabled = false;
+    });
+}
+
+
+function renderWeekTable(weekNumber) {
+    console.log("🎨 Rendering table for:", weekNumber);
+
+    const weeksContainer = document.getElementById("weeks-container");
+    if (!weeksContainer) {
+        console.error("❌ weeks-container not found!");
+        return;
+    }
+
+    const weekHTML = `
+        <div class="table-responsive mb-4">
+            <table class="table table-dark table-bordered text-center editableTable">
+                <thead>
+                    <tr class="week-header">
+                        <th scope="col" colspan="3" class="text-center week-title" data-week-number="${weekNumber}">
+                            Week ${weekNumber}
+                        </th>
+                    </tr>
+                    <tr class="week-header">
+                        <th scope="col" class="text-center">Day</th>
+                        <th scope="col" class="text-center">Log</th>
+                        <th scope="col" class="text-center">POP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${generateWeekRows(weekNumber)}
+                    ${generateTotalRow(weekNumber)}
+                </tbody>
+            </table>
+        </div>`;
+
+    weeksContainer.insertAdjacentHTML("afterbegin", weekHTML);
+
+    attachEditListeners();
+    attachInlineEditListeners();
+
+    console.log("✅ Table added for:", weekNumber);
+}
+
+
+
+// Function to generate each day's row
+function generateWeekRows(weekNumber) {
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    return days.map(day => `
+        <tr>
+            <th>${day}</th>
+            <td id="entry-${weekNumber}-${day}" class="editable"></td>
+            <td>
+                <button class="btn dark-orange-btn edit-btn" data-week="${weekNumber}" data-day="${day}">
+                    <i class="bi bi-patch-plus-fill me-1"></i> POP
+                </button>
+            </td>
+        </tr>
+    `).join(""); // Join all rows into a single string
+}
+
+// Function to generate the total row at the bottom of the week
+function generateTotalRow(weekNumber) {
+    return `
+        <tr>
+            <th>Total</th>
+            <td id="entry-${weekNumber}-Total">0h</td>
+            <td></td> <!-- No edit button for total row -->
+        </tr>
+    `;
+}
+
+/// Function to handle inline editing for log entries
+function editLogEntry(weekNumber, day) {
+    const entryCell = document.getElementById(`entry-${weekNumber}-${day}`);
+
+    if (!entryCell) return;
+
+    const currentValue = entryCell.textContent.trim();
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = currentValue;
+    input.classList.add("inline-edit-input"); // Optional: Add styling
+    entryCell.innerHTML = ""; // Clear the cell
+    entryCell.appendChild(input);
+    input.focus();
+
+    // Handle saving when input loses focus or Enter key is pressed
+    function saveEdit() {
+        const newValue = input.value.trim();
+        entryCell.textContent = newValue || currentValue; // Keep old value if empty
+
+        // Send update request to backend
+        fetch("/update_entry/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFToken(),
+            },
+            body: JSON.stringify({
+                week_number: weekNumber,
+                day: day,
+                value: newValue
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status !== "success") {
+                console.error("Error updating entry:", data.message);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    // Save on blur (clicking outside)
+    input.addEventListener("blur", saveEdit);
+
+    // Save on Enter key press
+    input.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            saveEdit();
+        }
+    });
+}
+
+// Attach event listeners to all log cells for inline editing
+function attachInlineEditListeners() {
+    document.querySelectorAll(".editable").forEach(cell => {
+        cell.addEventListener("click", function () {
+            const weekNumber = this.id.split("-")[1];
+            const day = this.id.split("-")[2];
+            editLogEntry(weekNumber, day);
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    attachEditListeners(); // Ensure existing weeks have event listeners
+    attachInlineEditListeners();
+    attachAddWeekListener(); // Ensure "Add New Week" button works
+});
+
+// Ensure event listeners are added on page load
+// document.addEventListener("DOMContentLoaded", function () {
+//    attachInlineEditListeners();
+//    attachAddWeekListener();
+//});
+
+
+
+// Function to retrieve CSRF token from cookies
+function getCSRFToken() {
+    let csrfToken = document.cookie.split("; ").find(row => row.startsWith("csrftoken="));
+    return csrfToken ? csrfToken.split("=")[1] : "";
+}
+
+</script>
+
+{% endblock %}
+
