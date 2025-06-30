@@ -40,14 +40,16 @@ Preview of POP on a Mobile Browser
 
 **3. Activate your venv: `source /venv/bin/activate`**<br>
 
-**4. Install Django: `pip install Django`**<br>
+**4. Install Django: `pip install Django` and `pip install python-dotenv`**<br>
 
-**5. Now run the Web App: `python3 manage.py runserver`**<br>
+**5. You'll need to make a file called .env in the myfitness app folder and generate your private SECRET_KEY with Django, google or ask ChatGPT how to do this it's simple**<br>
 
-**6. You should now be able to use the app locally using your browser at 127.0.0.1:8000**<br>
+**6. Now run the Web App: `python3 manage.py runserver`**<br>
+
+**7. You should now be able to use the app locally using your browser at 127.0.0.1:8000**<br>
 
 **Optional Step**
-**7. You may notice `pop.sh` and `stop_pop.sh` files in the repo. I made these so I can double click on them like an executable file that will open and close the web app just like a program. These are for a UNIX OS, and depending on the folder directory you run the app from, you will need to edit accordingly.**<br>
+**8. You may notice `pop.sh` and `stop_pop.sh` files in the repo. I made these so I can double click on them like an executable file that will open and close the web app just like a program. These are for a UNIX OS, and depending on the folder directory you run the app from, you will need to edit accordingly.**<br>
 
 
 **Administration of the web app can be done by creating a superuser account. Using manage.py, run the command: `python3 manage.py createsuperuser` and enter in the username and password of the admin account you wish to make. You will need to start the server again with `python3 manage.py runserver`**<br>
