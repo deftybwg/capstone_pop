@@ -42,7 +42,7 @@ Preview of POP on a Mobile Browser
 
 **4. Install Django: `pip install Django` and `pip install python-dotenv`**<br>
 
-**5. You'll need to make a file called .env in the myfitness app folder and generate your private SECRET_KEY with Django, google or ask ChatGPT how to do this it's simple. Once you've added your secret key, you should be able to move to step 6, but it may throw and error about migrations. If so, run `python3 manage.py makemigrations` then `python3 manage.py migrate`, and you should be good to go**<br>
+**5. You may need to make a file called .env in the myfitness app folder and generate your private SECRET_KEY with Django, or you can try skipping this step. So may need to query Google or ask ChatGPT about how to add a .env file with a DB username:password. Once you've added your secret key, you should be able to move to step 6, but it may throw and error about migrations. If so, run `python3 manage.py makemigrations` then `python3 manage.py migrate`, and you should be good to go**<br>
 
 **6. Now run the Web App: `python3 manage.py runserver`**<br>
 
